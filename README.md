@@ -1,7 +1,9 @@
 # toolBoxForMutantAndWTGenomes
 Rscripts to manipulate fasta or gtf. 
 
-Each R scripts can either be sourced from RStudio or launched in commandline mode: `Rscript ...`. 
+Each R scripts can either be sourced from RStudio or launched in command line mode: `Rscript ...`. 
+
+If you prefer command lines, the usage can be obtained by `Rscript ... --help`.
 
 A full documentation is available [here](./Documentation.md)
 
