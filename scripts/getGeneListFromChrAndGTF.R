@@ -16,7 +16,7 @@ if(length(commandArgs(TRUE))==0){
   outputFolder<-readLines(con=stdin(),n=1)
 } else{
   if(commandArgs(TRUE)[1]=="-h" || commandArgs(TRUE)[1]=="--help" || length(commandArgs(TRUE))<3){
-    cat("Usage: Rscript dateOfScript_getGeneListFromChrAndGTF.R.R pathForGtf listOfChr outputFolder\n")
+    cat("Usage: Rscript getGeneListFromChrAndGTF.R pathForGtf listOfChr outputFolder\n")
     stop()
   }
   gtfFile<-commandArgs(TRUE)[1]

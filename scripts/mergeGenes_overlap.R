@@ -19,7 +19,7 @@ UIinput <- function(s){
 ##################################################################
 if(length(commandArgs(TRUE))>0){
   if(commandArgs(TRUE)[1]=="-h" || commandArgs(TRUE)[1]=="--help"){
-    cat("Usage: Rscript 20180725_mergeGenes.R pathForGtf\n")
+    cat("Usage: Rscript mergeGenes_overlap.R pathForGtf\n")
     stop()
   }
   connection<-"stdin"

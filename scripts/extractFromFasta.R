@@ -14,7 +14,7 @@ if(length(commandArgs(TRUE))==0){
   outputPath<-paste0(dirname(pathForFasta),"/",basename(pathForFasta),"_",startPos,"-",endPos,".fa")
 } else{
   if(commandArgs(TRUE)[1]=="-h" || commandArgs(TRUE)[1]=="--help"){
-    cat("Usage: Rscript dateOfScript_extractFromFasta.R pathForFasta startPos endPos [outputPath]\n")
+    cat("Usage: Rscript extractFromFasta.R pathForFasta startPos endPos [outputPath]\n")
     stop()
   }
   pathForFasta<-commandArgs(TRUE)[1]

@@ -12,7 +12,7 @@ if(length(commandArgs(TRUE))==0){
   gtfFile<-file.choose()
 } else{
   if(commandArgs(TRUE)[1]=="-h" || commandArgs(TRUE)[1]=="--help"){
-    cat("Usage: Rscript dateOfScript_convertGtfToRefGeneForIGV.R pathForGtf \n")
+    cat("Usage: Rscript convertGtfToRefGeneForIGV.R pathForGtf \n")
     stop()
   }
   connection<-"stdin"
