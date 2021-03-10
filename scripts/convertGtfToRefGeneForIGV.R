@@ -1,4 +1,4 @@
-options(stringsAsFactors=F)
+options(stringsAsFactors=F,scipen=999)
 if(!"rtracklayer"%in%installed.packages()){
   source("https://bioconductor.org/biocLite.R")
   biocLite("rtracklayer")
@@ -12,7 +12,7 @@ if(length(commandArgs(TRUE))==0){
   gtfFile<-file.choose()
 } else{
   if(commandArgs(TRUE)[1]=="-h" || commandArgs(TRUE)[1]=="--help"){
-    cat("Usage: Rscript dateOfScript_checkGtf.R pathForGtf \n")
+    cat("Usage: Rscript dateOfScript_convertGtfToRefGeneForIGV.R pathForGtf \n")
     stop()
   }
   connection<-"stdin"
