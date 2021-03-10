@@ -69,5 +69,7 @@ finalDataFrame<-data.frame(nb=1:nrow(transcripts),id=transcripts$transcript_id,
                            nbE=transcripts$nbExons,bE=transcripts$startsExons,
                            eE=transcripts$endsExons,v12=rep(0,nrow(transcripts)),
                            name=transcripts$gene_name,v14=rep("unk",nrow(transcripts)),
-                           v15=rep("unk",nrow(transcripts)),v16=rep("unk",nrow(transcripts)))
+                           v15=rep("unk",nrow(transcripts)),pE=transcripts$phaseExons)
+cat("Writting the RefGene.txt file...")
 write.table(finalDataFrame,paste0(dirname(gtfFile),"/RefGene.txt"),sep="\t",quote=F,row.names=F,col.names=F)
+cat("Done.\n")
