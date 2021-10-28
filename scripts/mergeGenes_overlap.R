@@ -33,7 +33,7 @@ if(length(commandArgs(TRUE))>0){
 cat("Loading gtf file...")
 gtfInput<-readGFF(gtfFile)
 cat("Done.\n")
-simpleGTF<-unique(gtfInput[,c("gene_id","gene_name")])
+simpleGTF<-unique(gtfInput[!is.na(gtfInput$gene_name),c("gene_id","gene_name")])
 duplicatedGeneNames<-unique(with(simpleGTF,gene_name[duplicated(gene_name)]))
 newGTF<-gtfInput
 change<-data.frame(gene_name=character(),before=character(),after=character())
