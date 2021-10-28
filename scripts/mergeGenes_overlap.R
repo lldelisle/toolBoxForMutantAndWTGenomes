@@ -41,7 +41,7 @@ colsToChange<-grep("gene",colnames(gtfInput))
 for(gn in duplicatedGeneNames){
   # cat(gn,"\n")
   while(T){
-    smallgrl<-reduce(split(GRanges(newGTF[newGTF$type=="exon"&newGTF$gene_name==gn,]),newGTF$gene_id[newGTF$type=="exon"&newGTF$gene_name==gn]))
+    smallgrl<-reduce(split(GRanges(newGTF[newGTF$type=="exon" & newGTF$gene_name %in% gn,]),newGTF$gene_id[newGTF$type == "exon" & newGTF$gene_name %in% gn]))
     smallTable<-lapply(smallgrl,function(g){table(names(smallgrl)[as.matrix(findOverlaps(g,smallgrl))[,2]])})
     # print(smallTable)
     overlapsExons<-unlist(unname(smallTable),use.names = T)
