@@ -1,40 +1,42 @@
-options(stringsAsFactors=F)
-if(!"rtracklayer"%in%installed.packages()){
-  source("https://bioconductor.org/biocLite.R")
-  biocLite("rtracklayer")
+options(stringsAsFactors = F)
+if (!"devtools" %in% installed.packages()) {
+  install.packages("devtools", repos = "https://stat.ethz.ch/CRAN/")
 }
-library(rtracklayer)
+devtools::install_github("lldelisle/usefulLDfunctions")
+library(usefulLDfunctions)
+safelyLoadAPackageInCRANorBioconductor("rtracklayer")
 library(tools)
-rm(list=ls())
+rm(list = ls())
 
-if(length(commandArgs(TRUE))==0){
+if (length(commandArgs(TRUE)) == 0) {
   cat("Choose the gtf file.\n")
-  gtfFile<-file.choose()
+  gtfFile <- file.choose()
   cat("Put the name of the chromosome or the chromosomes separated by comma (for example chrM or chrX,chrY,chrM):\n")
-  chrList<-readLines(con=stdin(),n=1)
+  chrList <- readLines(con = stdin(), n = 1)
   cat("Put the path of the folder where you want to put the file:\n")
-  outputFolder<-readLines(con=stdin(),n=1)
+  outputFolder <- readLines(con = stdin(), n = 1)
 } else{
-  if(commandArgs(TRUE)[1]=="-h" || commandArgs(TRUE)[1]=="--help" || length(commandArgs(TRUE))<3){
+  if (commandArgs(TRUE)[1] == "-h" || commandArgs(TRUE)[1] == "--help" || length(commandArgs(TRUE)) < 3) {
     cat("Usage: Rscript getGeneListFromChrAndGTF.R pathForGtf listOfChr outputFolder\n")
     stop()
   }
-  gtfFile<-commandArgs(TRUE)[1]
-  chrList<-commandArgs(TRUE)[2]
-  outputFolder<-commandArgs(TRUE)[3]
+  gtfFile <- commandArgs(TRUE)[1]
+  chrList <- commandArgs(TRUE)[2]
+  outputFolder <- commandArgs(TRUE)[3]
 }
 
-chrToGet<-strsplit(chrList,",")[[1]]
+chrToGet <- strsplit(chrList, ",")[[1]]
 
 ##################################################
 cat("Loading gtf file...")
-gtfInput<-readGFF(gtfFile)
+gtfInput <- readGFF(gtfFile)
 cat("Done.\n")
 ##################################################
-subsetGtf<-subset(gtfInput,seqid%in%chrToGet)
-if(nrow(subsetGtf)==0){
+subsetGtf <- subset(gtfInput, seqid %in% chrToGet)
+if (nrow(subsetGtf) == 0) {
   cat("There is no gene in these chromosomes.\n")
 } else {
-  dir.create(outputFolder,recursive=T,showWarnings=F)
-  cat(unique(subsetGtf$gene_id),sep="\n",file=paste0(outputFolder,"/genesIn",chrList,"from",basename(file_path_sans_ext(gtfFile)),".txt"))
+  dir.create(outputFolder, recursive = T, showWarnings = F)
+  cat(unique(subsetGtf$gene_id), sep = "\n",
+      file = paste0(outputFolder, "/genesIn", chrList, "from", basename(file_path_sans_ext(gtfFile)), ".txt"))
 }
