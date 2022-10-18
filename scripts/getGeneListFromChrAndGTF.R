@@ -1,12 +1,19 @@
-options(stringsAsFactors = F)
-if (!"devtools" %in% installed.packages()) {
-  install.packages("devtools", repos = "https://stat.ethz.ch/CRAN/")
+options(stringsAsFactors = F, scipen = 999)
+
+if (!"rtracklayer" %in% installed.packages()) {
+  if (!"devtools" %in% installed.packages()) {
+    install.packages("devtools", repos = "https://stat.ethz.ch/CRAN/")
+  }
+  devtools::install_github("lldelisle/usefulLDfunctions", upgrade = "never")
+  library(usefulLDfunctions)
+  safelyLoadAPackageInCRANorBioconductor("rtracklayer")
+} else {
+  library(rtracklayer)
 }
-devtools::install_github("lldelisle/usefulLDfunctions")
-library(usefulLDfunctions)
-safelyLoadAPackageInCRANorBioconductor("rtracklayer")
-library(tools)
+
 rm(list = ls())
+
+library(tools)
 
 if (length(commandArgs(TRUE)) == 0) {
   cat("Choose the gtf file.\n")

@@ -1,9 +1,12 @@
 options(scipen = 999)
 if (!"seqinr" %in% installed.packages()) {
-  install.packages("seqinr")
+  install.packages("seqinr", repos = "https://stat.ethz.ch/CRAN/")
 }
 library(seqinr)
 library(tools)
+
+rm(list = ls())
+
 if (length(commandArgs(TRUE)) == 0) {
   cat("Choose the fasta file.\n")
   pathForFasta <- file.choose()
