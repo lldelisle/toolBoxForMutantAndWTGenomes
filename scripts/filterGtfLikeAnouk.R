@@ -29,7 +29,14 @@ UIinput <- function(s) {
 ##################################################################
 if (length(commandArgs(TRUE)) > 0) {
   if (commandArgs(TRUE)[1] == "-h" || commandArgs(TRUE)[1] == "--help") {
-    cat("Usage: Rscript filterGtfLikeAnouk.R pathForGtf [monoexonicBiotypes maxlen UCSCformat OnlyExons]\n")
+    cat("Usage: Rscript filterGtfLikeAnouk.R pathForGtf [monoexonicBiotypes maxlen UCSCformat OnlyExonsAndCDS]\n")
+    cat("Default values:
+monoexonicBiotypes: Mt_tRNA,Mt_rRNA,IG_D_gene,IG_J_gene,snoRNA,misc_RNA,miRNA,snRNA,rRNA
+maxlen 2500000
+UCSCformat TRUE
+OnlyExons TRUE
+\n
+For UCSCformat, it is more accurate to provide the path for the chromAlias.txt file from UCSC rather than TRUE.\n")
     stop()
   }
   connection <- "stdin"
@@ -42,7 +49,7 @@ if (length(commandArgs(TRUE)) > 0) {
   } else {
     monoexonicBiotypes <- commandArgs(TRUE)[2]
     maxlen <- as.numeric(commandArgs(TRUE)[3])
-    UCSCformat <- as.logical(commandArgs(TRUE)[4])
+    UCSCformat <- commandArgs(TRUE)[4]
     keepOnlyExons <- as.logical(commandArgs(TRUE)[5])
   }
 } else {
@@ -53,14 +60,9 @@ if (length(commandArgs(TRUE)) > 0) {
   monoexonicBiotypes <- UIinput("Mt_tRNA,Mt_rRNA,IG_D_gene,IG_J_gene,snoRNA,misc_RNA,miRNA,snRNA,rRNA")
   cat("Put the maximum length of transcript which will be kept or put enter to use 2500000 :")
   maxlen <- as.numeric(UIinput(2500000))
-  cat("Do you want to use UCSC format ?(Y)")
-  ans <- UIinput("Y")
-  if (tolower(ans) == "y") {
-    UCSCformat <- TRUE
-  } else {
-    UCSCformat <- FALSE
-  }
-  cat("Do you want to keep only exons ?(Y)")
+  cat("Do you want to use UCSC format ? (put the path to chromAlias.txt from UCSC, for example download https://hgdownload.soe.ucsc.edu/goldenPath/mm10/bigZips/mm10.chromAlias.txt)")
+  UCSCformat <- UIinput("path")
+  cat("Do you want to keep only exons and CDS?(Y)")
   ans <- UIinput("Y")
   if (tolower(ans) == "y") {
     keepOnlyExons <- TRUE
@@ -159,18 +161,34 @@ cat("There are ", length(pcFilteredTranscripts), " transcripts which are not pro
 newGtf <- gtfInput[!gtfInput$transcript_id %in% c(readThroughTranscripts, tooLongTranscripts, pcFilteredTranscripts), ]
 if (keepOnlyExons) {
   nBefore <- nrow(newGtf)
-  newGtf <- newGtf[newGtf[, 3] == "exon", ]
+  newGtf <- newGtf[newGtf[, 3] %in% c("exon", "CDS"), ]
   nAfter <- nrow(newGtf)
   if (nAfter != nBefore) {
-    name <- paste0(name, "_ExonsOnly")
+    name <- paste0(name, "_ExonsCDSOnly")
   }
+}
+
+if (file.exists(UCSCformat)) {
+  alias.df <- read.delim(UCSCformat, header = F, comment.char = "#")
+  alias <- NULL
+  for (i in 2:ncol(alias.df)) {
+    cur.alias <- alias.df[, 1]
+    names(cur.alias) <- alias.df[, i]
+    alias <- c(alias, cur.alias[names(cur.alias) != ""])
+  }
+  UCSCformat <- TRUE
+} else if (tolower(UCSCformat) == "y" || tolower(UCSCformat) == "yes" || tolower(UCSCformat) == "t" || tolower(UCSCformat) == "true") {
+  alias <- c(paste0("chr", c(1:25, "X", "Y")), "chrM")
+  names(alias) <- c(1:25, "X", "Y", "MT")
+  UCSCformat <- TRUE
+} else {
+  UCSCformat <- FALSE
 }
 if (UCSCformat) {
   if (!grepl("chr", newGtf[1, 1])) {
-    # I filter only for chromosome with numbers or XYM
-    newGtf <- newGtf[newGtf$seqid %in% c(1:25, "X", "Y", "MT"), ]
-    newGtf$seqid <- paste0("chr", newGtf$seqid)
-    newGtf$seqid[newGtf$seqid == "chrMT"] <- "chrM"
+    # I filter only for chromosome in alias table
+    newGtf <- newGtf[newGtf$seqid %in% names(alias), ]
+    newGtf$seqid <- alias[as.character(newGtf$seqid)]
     name <- paste0(name, "_UCSC")
   }
 }
