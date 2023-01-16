@@ -16,14 +16,14 @@ rm(list = ls())
 ################################################################################
 UIinput <- function(s) {
 
-  #Ask for user input
+  # Ask for user input
   x <- readLines(con = connection, 1)
 
-  #Check if empty
+  # Check if empty
   if (x == "") {
     x <- s
   }
-  #Return
+  # Return
   return(x)
 }
 ##################################################################
@@ -50,8 +50,9 @@ change <- data.frame(gene_name = character(), before = character(), after = char
 colsToChange <- grep("gene", colnames(gtfInput))
 for (gn in duplicatedGeneNames) {
   while (T) {
-    smallgrl <- reduce(split(GRanges(newGTF[newGTF$type == "exon" & newGTF$gene_name %in% gn, ]),
-                             newGTF$gene_id[newGTF$type == "exon" & newGTF$gene_name %in% gn]))
+    smallgrl <- reduce(split(GRanges(newGTF[newGTF$type == "exon" & newGTF$gene_name %in%
+      gn, ]), newGTF$gene_id[newGTF$type == "exon" & newGTF$gene_name %in%
+      gn]))
     smallTable <- lapply(smallgrl, function(g) {
       table(names(smallgrl)[as.matrix(findOverlaps(g, smallgrl))[, 2]])
     })
@@ -65,10 +66,8 @@ for (gn in duplicatedGeneNames) {
       masterEns %in% names(t)
     }))), masterEns)
     if (length(ensIDToRename) > 0) {
-      change <- rbind(change,
-                      data.frame(gene_name = rep(gn, length(ensIDToRename)),
-                                 before = ensIDToRename,
-                                 after = rep(masterEns, length(ensIDToRename))))
+      change <- rbind(change, data.frame(gene_name = rep(gn, length(ensIDToRename)),
+        before = ensIDToRename, after = rep(masterEns, length(ensIDToRename))))
       masterCols <- unique(newGTF[newGTF$gene_id == masterEns, colsToChange])
       if (nrow(masterCols) > 1) {
         cat("There are inconstistancies in \n")
@@ -84,9 +83,10 @@ for (gn in duplicatedGeneNames) {
 }
 name <- gsub(".gtf", "", basename(gtfFile))
 name <- gsub(".gz", "", name)
-write.table(change, paste0(dirname(gtfFile), "/renamedEnsIDOf", name, ".txt"),
-            sep = "\t", quote = F, row.names = F)
+write.table(change, paste0(dirname(gtfFile), "/renamedEnsIDOf", name, ".txt"), sep = "\t",
+  quote = F, row.names = F)
 cat("Writing the merged gtf...")
 rownames(newGTF) <- NULL
-export.gff(newGTF, paste0(dirname(gtfFile), "/mergeOverlapGenesOf", name, ".gtf"), format = "gtf")
+export.gff(newGTF, paste0(dirname(gtfFile), "/mergeOverlapGenesOf", name, ".gtf"),
+  format = "gtf")
 cat("Done.\n")

@@ -14,8 +14,9 @@ if (length(commandArgs(TRUE)) == 0) {
   startPos <- as.numeric(readLines(con = stdin(), n = 1))
   cat("Write the end position included.\n")
   endPos <- as.numeric(readLines(con = stdin(), n = 1))
-  outputPath <- paste0(dirname(pathForFasta), "/", basename(pathForFasta), "_", startPos, "-", endPos, ".fa")
-} else{
+  outputPath <- paste0(dirname(pathForFasta), "/", basename(pathForFasta), "_",
+    startPos, "-", endPos, ".fa")
+} else {
   if (commandArgs(TRUE)[1] == "-h" || commandArgs(TRUE)[1] == "--help") {
     cat("Usage: Rscript extractFromFasta.R pathForFasta startPos endPos [outputPath]\n")
     stop()
@@ -26,7 +27,8 @@ if (length(commandArgs(TRUE)) == 0) {
   if (length(commandArgs(TRUE)) > 3) {
     outputPath <- commandArgs(TRUE)[4]
   } else {
-    outputPath <- paste0(dirname(pathForFasta), "/", basename(pathForFasta), "_", startPos, "-", endPos, ".fa")
+    outputPath <- paste0(dirname(pathForFasta), "/", basename(pathForFasta),
+      "_", startPos, "-", endPos, ".fa")
   }
 }
 
@@ -36,11 +38,11 @@ if (startPos > endPos) {
 cat("Loading fasta...\n")
 if (file_ext(pathForFasta) == "gz") {
   chrSeq <- read.fasta(gzfile(pathForFasta), seqtype = "DNA", forceDNAtolower = FALSE)[[1]]
-} else{
-  chrSeq <- read.fasta(pathForFasta, seqtype = "DNA", forceDNAtolower = FALSE)[[1]] 
+} else {
+  chrSeq <- read.fasta(pathForFasta, seqtype = "DNA", forceDNAtolower = FALSE)[[1]]
 }
 cat("Done.\n")
 cat("Writing new fasta...")
-write.fasta(chrSeq[startPos:endPos], name = paste0(getName(chrSeq), ":", startPos, "-", endPos),
-            outputPath, open = "w")
+write.fasta(chrSeq[startPos:endPos], name = paste0(getName(chrSeq), ":", startPos,
+  "-", endPos), outputPath, open = "w")
 cat("Done.\n")
