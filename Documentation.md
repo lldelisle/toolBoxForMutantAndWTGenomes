@@ -88,7 +88,7 @@ And a gtf, you can get on on [GENCODE](https://www.gencodegenes.org/) but I pers
     - Just do the sum of FPKM for both ensembl_id.
     - Increase the number of reads falling into this gene because it decreases the number of ambiguous reads.
   - That's why I recommand to use a merge version of a filtered gtf.
-- Name of the script: `_mergeGenes_overlap.R`
+- Name of the script: `mergeGenes_overlap.R`
 - What is needed:
   - A gtf file (it can be gzipped).
 - What it will do:
@@ -98,3 +98,21 @@ And a gtf, you can get on on [GENCODE](https://www.gencodegenes.org/) but I pers
 - How to launch it?
   - SOURCE ! (open it in RStudio and click on the source button which is top right).
     - A window will automatically open and you need to choose the gtf file.
+
+## Subset count or FPKM tables to only keep protein coding genes
+- Why?
+  - Because sometimes you prefer to stick to protein coding genes for downstream analysis (PCA/Clustering/DE).
+- Name of the script: `subsetForProteinCoding.R`
+- What is needed:
+  - A gtf file (it can be gzipped).
+  - A count/FPKM table.
+  - The name of the column with gene ids.
+- What it will do:
+  - It will look for genes which are protein_coding.
+  - It create a new table where any line that does not correspond to these genes is discarded.
+  - The new table will be saved in the same directory as the input table with the suffix `_onlypc.txt`.
+- How to launch it?
+  - SOURCE ! (open it in RStudio and click on the source button which is top right).
+    - A window will automatically open and you need to choose the gtf file.
+    - Then, a window will automatically open and you need to choose the count/FPKM table file.
+    - Then, in the console you will need to type the column name in your count/FPKM table that matches gene_id in the gtf.
