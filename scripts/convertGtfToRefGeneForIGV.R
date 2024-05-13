@@ -53,6 +53,12 @@ gtfInput.cds <- subset(gtfInput, type == "CDS")
 gtfInput <- subset(gtfInput, type == "exon")
 gtfInput <- gtfInput[order(gtfInput$start, gtfInput$end), ]
 cat("Building the transcripts from the exons.\n")
+if (!"gene_name" %in% colnames(gtfInput)) {
+  gtfInput$gene_name <- gtfInput$gene_id
+}
+if (!"exon_id" %in% colnames(gtfInput)) {
+  gtfInput$exon_id <- 1:nrow(gtfInput)
+}
 transcripts <- unique(gtfInput[, c("seqid", "strand", "gene_name", "gene_id", "transcript_id")])
 if (anyDuplicated(transcripts$transcript_id) != 0) {
   print(transcripts[duplicated(transcripts$transcript_id), ])
