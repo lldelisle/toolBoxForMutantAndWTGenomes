@@ -2,7 +2,7 @@
 
 ## Inputs
 Usually you need fasta file which you can download on [UCSC for example](https://hgdownload.soe.ucsc.edu/downloads.html).
-And a gtf, you can get on on [GENCODE](https://www.gencodegenes.org/) but I personally prefer the one from [Ensembl](https://www.gencodegenes.org/) which are more exhaustive but sometimes too exhaustive so I filter them.
+And a gtf, you can get on on [GENCODE](https://www.gencodegenes.org/) but I personally prefer the one from [Ensembl](https://www.ensembl.org/info/data/ftp/index.html) which are more exhaustive but sometimes too exhaustive so I filter them.
 
 ## Extract a small sequence from a big fasta
 - Name of the script: `extractFromFasta.R`
