@@ -133,6 +133,6 @@ finalDataFrame <- data.frame(nb = 1:nrow(transcripts), id = transcripts$transcri
   v12 = rep(0, nrow(transcripts)), name = transcripts$gene_name, v14 = rep("unk",
     nrow(transcripts)), v15 = rep("unk", nrow(transcripts)), pE = transcripts$phaseExons)
 cat("Writting the RefGene.txt file...")
-write.table(finalDataFrame, gsub(".gtf$", "_RefGene.txt", gsub(".gz$", "", original.gtf)), sep = "\t",
+write.table(finalDataFrame, gsub(".gtf$", "_RefGene.txt", gsub(".gz$", "", gtfFile)), sep = "\t",
   quote = F, row.names = F, col.names = F)
 cat("Done.\n")
