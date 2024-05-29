@@ -34,13 +34,13 @@ And a gtf, you can get on on [GENCODE](https://www.gencodegenes.org/) but I pers
 - Why?
   - IGV is able to read gtf but this is really really slow and sometimes IGV crashes.
   - I discovered that there is a format which IGV is using which is much more faster. This is RefGene.txt. And it allows to see the name of the genes!
-  - To know it is a RefGene file, IGV needs that the file name is exactly RefGene.txt.
+  - To know it is a RefGene file, IGV needs that the file name ends with RefGene.txt.
   - Here is a script which can convert a gtf to RefGene.txt with transcripts information (for the moment which part of the transcript is coding is not put in the RefGene.txt).
 - Name of the script: `convertGtfToRefGeneForIGV.R`
 - What is needed:
   - A gtf file (it can be gzipped).
 - What it will do:
-  - It will create a file named RefGene.txt which correspond to every transcript which have exon in the original gtf.
+  - It will create a file named like the gtf but ends with _RefGene.txt which correspond to every transcript which have exon in the original gtf.
   - For the moment, the script is not trying to find where the transcript is coding. It is like every transcript was a non-coding transcript.
 - How to launch it?
   - SOURCE ! (open it in RStudio and click on the source button which is top right).
