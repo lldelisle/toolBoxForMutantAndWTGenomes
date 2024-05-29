@@ -116,3 +116,21 @@ And a gtf, you can get on on [GENCODE](https://www.gencodegenes.org/) but I pers
     - A window will automatically open and you need to choose the gtf file.
     - Then, a window will automatically open and you need to choose the count/FPKM table file.
     - Then, in the console you will need to type the column name in your count/FPKM table that matches gene_id in the gtf.
+
+
+## Convert an Ensembl GTF to get chromosomes from UCSC
+- Why?
+  - Because the Ensembl gtf are more comprehensive but we are using UCSC fasta
+  - Ensembl names its chromosome with numbers like 1, 2... and UCSC 'chr1', 'chr2, ...
+the issue is with contigs. For some species, these contigs are important and their naming
+between Ensembl and UCSC has no logic so you need a table that tells you what is what.
+- Name of the script: `convertEnsemblGtfToUCSC.R`
+- What is needed:
+  - A chromAlias table available on [UCSC](https://hgdownload.soe.ucsc.edu/downloads.html).
+  - A gtf file (it can be gzipped).
+- What it will do:
+  - It will convert the chromosome columns using the alias info.
+- How to launch it?
+  - SOURCE ! (open it in RStudio and click on the source button which is top right).
+    - A window will automatically open and you need to choose the alias file.
+    - Then, a window will automatically open and you need to choose the gtf file.
