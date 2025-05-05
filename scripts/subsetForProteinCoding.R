@@ -44,7 +44,11 @@ cat("Loading gtf file...")
 gtfInput <- readGFF(gtfFile)
 cat("Done.\n")
 ##################################################
-subsetGtf <- subset(gtfInput, gene_biotype %in% "protein_coding")
+if ("gene_biotype" %in% colnames(gtfInput)) {
+  subsetGtf <- subset(gtfInput, gene_biotype %in% "protein_coding")
+} else {
+  subsetGtf <- subset(gtfInput, gene_type %in% "protein_coding")
+}
 if (nrow(subsetGtf) == 0) {
   stop("There is no gene with gene_biotype protein_coding.")
 }
