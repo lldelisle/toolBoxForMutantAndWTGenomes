@@ -35,10 +35,14 @@ cat("Loading gtf file...")
 input.gr <- readGFFAsGRanges(original.gtf)
 cat("Done.\n")
 ###################################################
-alias.df <- read.delim(alias.file)
-new.names <- alias.df$X..ucsc
-names(new.names) <- alias.df$ensembl
-output.gr <- renameSeqlevels(input.gr, new.names[seqlevels(input.gr)])
+alias.df <- read.delim(alias.file, header = F, comment.char = "#")
+alias <- NULL
+for (i in 2:ncol(alias.df)) {
+    cur.alias <- alias.df[, 1]
+    names(cur.alias) <- alias.df[, i]
+    alias <- c(alias, cur.alias[names(cur.alias) != ""])
+}
+output.gr <- renameSeqlevels(input.gr, alias[seqlevels(input.gr)])
 
 cat("Writting new gtf file to ", output.gtf, "...")
 export.gff(output.gr, output.gtf)
